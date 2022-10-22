@@ -1,3 +1,4 @@
+using IdentitServerAPI.Configure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -22,6 +23,8 @@ namespace IdentitServerAPI
                 .AddInMemoryApiScopes(IdentityConfiguration.ApiScopes)
                 .AddTestUsers(IdentityConfiguration.TestUsers)
                 .AddDeveloperSigningCredential();
+
+            services.AddControllersWithViews();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -32,16 +35,17 @@ namespace IdentitServerAPI
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseStaticFiles();
+
             app.UseRouting();
 
             app.UseIdentityServer();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("Hello World!");
-                });
+            app.UseAuthorization();
+
+            app.UseEndpoints(entpoints => 
+            { 
+                entpoints.MapDefaultControllerRoute();  
             });
         }
     }

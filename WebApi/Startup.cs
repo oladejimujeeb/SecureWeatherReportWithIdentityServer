@@ -32,11 +32,12 @@ namespace WebApi
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApi", Version = "v1" });
             });
-            services.AddAuthentication("Mulad")
-                .AddIdentityServerAuthentication("Mulad", options =>
+            services.AddAuthentication("Bearer")
+                .AddIdentityServerAuthentication("Bearer", options =>
                 {
                     options.ApiName = "myApi";
                     options.Authority = "https://localhost:5001";
+                    options.RequireHttpsMetadata = false;
                 });
         }
 
